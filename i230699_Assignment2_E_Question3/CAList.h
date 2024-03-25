@@ -7,11 +7,13 @@ class CAList
 	static constexpr int maximumKeysAllowed{ 7 };
 
 	bool courseFoundInListIndex(Course&, Course* &);
+	void deleteEmptyCourses();
 
 public:
 	CAList();
 	~CAList();
 	CAList(CAList&);
+
 
 	int getCourseCount();
 	Course & operator[](const char *);

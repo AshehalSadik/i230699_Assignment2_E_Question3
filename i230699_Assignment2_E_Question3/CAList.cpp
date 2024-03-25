@@ -1,8 +1,6 @@
 #include "CAList.h"
 
 
-
-
 char* makeSpacesString(int numberOfSpaces)
 {
 	char* string = new char[numberOfSpaces + 1] {'\0'};
@@ -69,6 +67,7 @@ CAList::CAList(CAList& object2)
 }
 
 
+
 int CAList::getCourseCount()
 {
 	Course* navigatingPointer{ firstCourse };
@@ -94,7 +93,7 @@ Course & CAList::operator[](const char* courseName)
 		editingPointer = &((*editingPointer)->getNextCourse());
 	}
 
-	if (navigatingPointer == nullptr && getCourseCount() < maximumKeysAllowed)
+	if (navigatingPointer == nullptr)
 	{
 		*editingPointer = new Course;
 		navigatingPointer = *editingPointer;
@@ -103,12 +102,6 @@ Course & CAList::operator[](const char* courseName)
 		navigatingPointer->getNextCourse() = nullptr;
 	}
 
-	static Course trash;
-
-	if (navigatingPointer == nullptr)
-	{
-		return trash;
-	}
 
 	return *navigatingPointer;
 }
@@ -212,17 +205,16 @@ CAList& CAList::operator-(CAList& list2)
 	return *difference;
 }
 
+
 void CAList::operator-=(CAList& list2)
 {
 	*this = *this - list2;
 }
 
 
-
-
-std::ostream& operator<<(std::ostream& console, CAList& object)
+void CAList::deleteEmptyCourses()
 {
-	Course* navigatingPointer1{ object.firstCourse }, ** editingPointer{ &(object.firstCourse) };
+	Course* navigatingPointer1{ this->firstCourse}, ** editingPointer{&(this->firstCourse)};
 	while (navigatingPointer1 != nullptr)
 	{
 		if ((*navigatingPointer1).getFirstInstructor() == nullptr)
@@ -241,7 +233,12 @@ std::ostream& operator<<(std::ostream& console, CAList& object)
 			editingPointer = &((*editingPointer)->getNextCourse());
 		}
 	}
+}
 
+std::ostream& operator<<(std::ostream& console, CAList& object)
+{
+	object.deleteEmptyCourses();
+	
 
 
 	const int consoleWindow = 80;
