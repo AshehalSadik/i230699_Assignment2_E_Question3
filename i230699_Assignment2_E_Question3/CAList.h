@@ -18,8 +18,8 @@ public:
 	int getMaximumKeysAllowed();
 	int getCourseCount();
 	Course & operator[](const char *);
-	
-	void operator=(CAList&);
+
+	CAList& operator=(CAList const &);
 	CAList& operator+(CAList&);
 	CAList& operator-(CAList&);
 	void operator-=(CAList&);

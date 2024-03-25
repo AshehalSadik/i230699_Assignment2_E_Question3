@@ -22,7 +22,7 @@ public:
 	void setName(char *);
 	void setReference(Instructor*);
 
-	void operator=(Instructor&);
+	Instructor& operator=(Instructor const &);
 
 	friend std::ostream& operator<<(std::ostream&, Instructor&);
 };

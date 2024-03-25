@@ -122,24 +122,29 @@ Course & CAList::operator[](const char* courseName)
 }
 
 
-void CAList::operator=(CAList &object2)
+CAList & CAList::operator=(CAList const &object2)
 {
-	Course* navigatingPointer{ object2.firstCourse }, ** editingPointer{ &(this->firstCourse) };
+    if (this != &object2)
+    {
+        Course* navigatingPointer{ object2.firstCourse }, ** editingPointer{ &(this->firstCourse) };
 
-	if (*editingPointer != nullptr)
-	{
-		this->refreshList();
-		editingPointer = &(this->firstCourse);
-	}
+        if (*editingPointer != nullptr)
+        {
+            this->refreshList();
+            editingPointer = &(this->firstCourse);
+        }
 
-	while (navigatingPointer != nullptr)
-	{
-		*editingPointer = new Course;
-		**editingPointer = *navigatingPointer;
+        while (navigatingPointer != nullptr)
+        {
+            *editingPointer = new Course;
+            **editingPointer = *navigatingPointer;
 
-		editingPointer = &((*editingPointer)->getNextCourse());
-		navigatingPointer = navigatingPointer->getNextCourse();
-	}
+            editingPointer = &((*editingPointer)->getNextCourse());
+            navigatingPointer = navigatingPointer->getNextCourse();
+        }
+    }
+
+    return *this;
 }
 
 
@@ -273,3 +278,5 @@ std::ostream& operator<<(std::ostream& console, CAList& object)
 	return console;
 
 }
+
+

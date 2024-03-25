@@ -98,9 +98,15 @@ void Instructor::setReference(Instructor* newReference)
 }
 
 
-void Instructor::operator=(Instructor& object2)
+Instructor& Instructor::operator=(Instructor const & object2)
 {
-	this->name = getString(object2.name);
-	this->reference = nullptr;
+    if (this != &object2)
+    {
+        this->name = getString(object2.name);
+        this->reference = nullptr;
+    }
+
+    return *this;
+
 }
 

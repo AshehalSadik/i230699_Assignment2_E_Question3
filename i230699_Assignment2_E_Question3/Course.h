@@ -29,8 +29,8 @@ public:
 	int getInstructorCount();
 	int totalCourseStringLength();
 
-	void operator=(const char*);
-	void operator=(Course&);
+	Course& operator=(const char*);
+	Course& operator=(Course const&);
 	void operator+=(const char*);
 	Course& operator-(Course&);
 	Course& operator-(Instructor&);

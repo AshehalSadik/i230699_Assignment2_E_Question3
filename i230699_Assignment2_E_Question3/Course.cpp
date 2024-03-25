@@ -129,7 +129,7 @@ bool Course::InstructorFoundInCourseIndex(Instructor& instructor, Instructor*& r
 }
 
 
-void Course::operator=(const char* value)
+Course& Course::operator=(const char* value)
 {
 	if (previousCourse != nullptr)
 	{
@@ -137,12 +137,12 @@ void Course::operator=(const char* value)
 		delete *previousCourse;
 		*editingPointer = nullptr;
 
-		return;
+		return *this;
 	}
 
 	if (getInstructorCount() == maximumNumberOfInstructors)
 	{
-		return;
+		return *this;
 	}
 
 	Instructor* navigatingPointer{ firstInstructor }, ** editingPointer{&firstInstructor};
@@ -167,29 +167,36 @@ void Course::operator=(const char* value)
 	}
 
 	navigatingPointer->setName(getString(value));
+
+    return *this;
 }
 
 
-void Course::operator=(Course& object2)
+Course& Course::operator=(Course const & object2)
 {
-	Instructor* navigatingPointer{ object2.firstInstructor }, ** editingPointer{ &(firstInstructor) };
+	if (this != &object2)
+    {
+        Instructor* navigatingPointer{ object2.firstInstructor }, ** editingPointer{ &(firstInstructor) };
 
-	if (*editingPointer != nullptr)
-	{
-		this->refreshCourse();
-		editingPointer = &(this->firstInstructor);
-	}
+        if (*editingPointer != nullptr)
+        {
+            this->refreshCourse();
+            editingPointer = &(this->firstInstructor);
+        }
 
-	this->courseName = getString(object2.courseName);
+        this->courseName = getString(object2.courseName);
 
-	while (navigatingPointer != nullptr)
-	{
-		*editingPointer = new Instructor;
-		**editingPointer = *navigatingPointer;
+        while (navigatingPointer != nullptr)
+        {
+            *editingPointer = new Instructor;
+            **editingPointer = *navigatingPointer;
 
-		editingPointer = &((*editingPointer)->getReference());
-		navigatingPointer = navigatingPointer->getReference();
-	}
+            editingPointer = &((*editingPointer)->getReference());
+            navigatingPointer = navigatingPointer->getReference();
+        }
+    }
+
+    return *this;
 }
 
 
