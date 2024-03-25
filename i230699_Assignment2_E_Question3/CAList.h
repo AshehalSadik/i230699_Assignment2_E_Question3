@@ -3,7 +3,7 @@
 
 class CAList
 {
-	Course* firstCourse;
+	Course* firstCourse{};
 	static constexpr int maximumKeysAllowed{ 7 };
 
 	bool courseFoundInListIndex(Course&, Course* &);
@@ -13,15 +13,17 @@ public:
 	CAList();
 	~CAList();
 	CAList(CAList&);
+    CAList(CAList&&) noexcept;
 
 	void refreshList();
 	int getMaximumKeysAllowed();
 	int getCourseCount();
 	Course & operator[](const char *);
 
+
 	CAList& operator=(CAList const &);
-	CAList& operator+(CAList&);
-	CAList& operator-(CAList&);
+	CAList operator+(CAList&) const;
+	CAList operator-(CAList&) const;
 	void operator-=(CAList&);
 	
 

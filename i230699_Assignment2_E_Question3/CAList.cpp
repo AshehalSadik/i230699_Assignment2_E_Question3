@@ -20,7 +20,7 @@ bool CAList::courseFoundInListIndex(Course& course, Course* &returnPointer)
 
 	while (navigatingPointer != nullptr)
 	{
-		if (stringCompare(navigatingPointer->getCourseName(), course.getCourseName()) == true)
+		if (stringCompare(navigatingPointer->getCourseName(), course.getCourseName()))
 		{
 			returnPointer = navigatingPointer;
 			return true;
@@ -96,9 +96,11 @@ int CAList::getCourseCount()
 
 Course & CAList::operator[](const char* courseName)
 {
+    this->deleteEmptyCourses();
+
 	Course* navigatingPointer = firstCourse, **editingPointer = &firstCourse;
 
-	while (navigatingPointer != nullptr && stringCompare(navigatingPointer->getCourseName(), courseName) != true)
+	while (navigatingPointer != nullptr && !stringCompare(navigatingPointer->getCourseName(), courseName))
 	{
 		navigatingPointer = navigatingPointer->getNextCourse();
 		editingPointer = &((*editingPointer)->getNextCourse());
@@ -124,6 +126,8 @@ Course & CAList::operator[](const char* courseName)
 
 CAList & CAList::operator=(CAList const &object2)
 {
+    this->deleteEmptyCourses();
+
     if (this != &object2)
     {
         Course* navigatingPointer{ object2.firstCourse }, ** editingPointer{ &(this->firstCourse) };
@@ -148,21 +152,21 @@ CAList & CAList::operator=(CAList const &object2)
 }
 
 
-CAList& CAList::operator+(CAList& list2)
+CAList CAList::operator+(CAList& list2) const
 {
-	CAList *sum = new CAList;
-	*sum = *this;
+	CAList sum;
+	sum = *this;
 
-	Course** editingPointer(&(sum->firstCourse));
+	Course** editingPointer(&(sum.firstCourse));
 	while (*editingPointer != nullptr)
 	{
 		editingPointer = &((*editingPointer)->getNextCourse());
 	}
 	
 	Course* navigatingPointer2{ list2.firstCourse }, *courseFoundInSecondListIndex{ nullptr };
-	while (sum->getCourseCount() < maximumKeysAllowed && navigatingPointer2 != nullptr)
+	while (sum.getCourseCount() < maximumKeysAllowed && navigatingPointer2 != nullptr)
 	{
-		if (!sum->courseFoundInListIndex(*navigatingPointer2, courseFoundInSecondListIndex))
+		if (!sum.courseFoundInListIndex(*navigatingPointer2, courseFoundInSecondListIndex))
 		{
 			*editingPointer = new Course;
 
@@ -170,7 +174,7 @@ CAList& CAList::operator+(CAList& list2)
 
 			editingPointer = &((*editingPointer)->getNextCourse());
 		}
-		else if (sum->courseFoundInListIndex(*navigatingPointer2, courseFoundInSecondListIndex))
+		else if (sum.courseFoundInListIndex(*navigatingPointer2, courseFoundInSecondListIndex))
 		{
 			courseFoundInSecondListIndex->appendMissingInstructors(*navigatingPointer2);
 		}
@@ -178,23 +182,23 @@ CAList& CAList::operator+(CAList& list2)
 		navigatingPointer2 = navigatingPointer2->getNextCourse();
 	}
 
-	return *sum;
+	return sum;
 
 }
 
 
-CAList& CAList::operator-(CAList& list2)
+CAList CAList::operator-(CAList& list2) const
 {
-	CAList* difference = new CAList;
-	*difference = *this;
+	CAList difference;
+	difference = *this;
 
-	Course* navigatingPointer{ difference->firstCourse }, ** editingPointer{ &(difference->firstCourse)};
+	Course* navigatingPointer{ difference.firstCourse }, ** editingPointer{ &(difference.firstCourse)};
 
 	while (navigatingPointer != nullptr)
 	{
 		Course* courseFoundPointer{ nullptr };
 
-		if (list2.courseFoundInListIndex(*navigatingPointer, courseFoundPointer) == true)
+		if (list2.courseFoundInListIndex(*navigatingPointer, courseFoundPointer))
 		{
 			*navigatingPointer - *courseFoundPointer;
 
@@ -205,7 +209,7 @@ CAList& CAList::operator-(CAList& list2)
 		
 	}
 
-	return *difference;
+	return difference;
 }
 
 
@@ -242,8 +246,6 @@ void CAList::deleteEmptyCourses()
 std::ostream& operator<<(std::ostream& console, CAList& object)
 {
 	object.deleteEmptyCourses();
-	
-
 
 	const int consoleWindow = 80;
 	Course* navigatingPointer{ object.firstCourse };
@@ -273,9 +275,16 @@ std::ostream& operator<<(std::ostream& console, CAList& object)
 
 		navigatingPointer = navigatingPointer->getNextCourse();
 
+        delete []spaceString;
 	}
 
 	return console;
+
+}
+
+CAList::CAList(CAList && object) noexcept {
+
+    *this = object;
 
 }
 

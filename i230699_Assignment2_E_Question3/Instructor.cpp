@@ -88,7 +88,7 @@ char*& Instructor::getName()
 void Instructor::setName(char* value)
 {
 	
-	name = getString(value);
+	name = value;
 }
 
 

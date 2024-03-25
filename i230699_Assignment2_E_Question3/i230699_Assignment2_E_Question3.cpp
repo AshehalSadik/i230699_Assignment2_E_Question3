@@ -32,7 +32,7 @@ int main()
 
     cout << tt2 << endl;
 
-    tt3 = tt + tt2;
+    CAList tt5 = tt + tt2;
 
     cout << tt3 << endl;
 
@@ -68,5 +68,22 @@ int main()
     
 
     cout << tt2 << endl;
+
+    CAList testing;
+    testing["a"] = "a";
+    testing["b"] = "a";
+    testing["c"] = "a";
+    testing["d"] = "a";
+    testing["e"] = "a";
+    testing["f"] = "a";
+    testing["g"] = "a";
+    testing["h"] = "a";
+
+    cout << testing << endl;
+
+    testing["a"] -= "a";
+    testing["i"] = "i";
+
+    cout << testing << endl;
 }
 
