@@ -62,8 +62,10 @@ Instructor::Instructor()
 
 Instructor::~Instructor()
 {
-
+	delete[] name;
 }
+
+
 
 Instructor::Instructor(const char* name)
 {
@@ -77,18 +79,15 @@ Instructor* &Instructor::getReference()
 	return reference;
 }
 
-char* Instructor::getName()
+char*& Instructor::getName()
 {
-	return getString(this->name);
+	return this->name;
 }
 
 
 void Instructor::setName(char* value)
 {
-	if (name == nullptr)
-	{
-		name = new char[getStringLength(value) + 1];
-	}
+	
 	name = getString(value);
 }
 

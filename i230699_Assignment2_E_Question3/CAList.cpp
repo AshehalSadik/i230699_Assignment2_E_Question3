@@ -41,6 +41,20 @@ CAList::CAList()
 
 CAList::~CAList()
 {
+	this->refreshList();
+}
+
+
+CAList::CAList(CAList& object2)
+{
+	firstCourse = nullptr;
+
+	*this = object2;
+}
+
+
+void CAList::refreshList()
+{
 	Course** deletingPointer{ &firstCourse };
 
 	while (firstCourse != nullptr)
@@ -56,14 +70,6 @@ CAList::~CAList()
 
 		deletingPointer = &firstCourse;
 	}
-}
-
-
-CAList::CAList(CAList& object2)
-{
-	firstCourse = nullptr;
-
-	*this = object2;
 }
 
 
@@ -122,7 +128,8 @@ void CAList::operator=(CAList &object2)
 
 	if (*editingPointer != nullptr)
 	{
-		delete* editingPointer;
+		this->refreshList();
+		editingPointer = &(this->firstCourse);
 	}
 
 	while (navigatingPointer != nullptr)
@@ -212,7 +219,7 @@ void CAList::deleteEmptyCourses()
 		{
 			Course* temporaryPointer = navigatingPointer1->getNextCourse();
 
-			delete* editingPointer;
+			delete *editingPointer;
 
 			*editingPointer = temporaryPointer;
 

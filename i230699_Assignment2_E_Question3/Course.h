@@ -16,6 +16,7 @@ class Course
 
 public:
 	Course(Course ** = nullptr);
+	Course(Course&);
 	~Course();
 
 	void refreshCourse();

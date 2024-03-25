@@ -17,7 +17,7 @@ public:
 	Instructor(const char*);
 
 	Instructor* &getReference();
-	char* getName();
+	char*& getName();
 	
 	void setName(char *);
 	void setReference(Instructor*);

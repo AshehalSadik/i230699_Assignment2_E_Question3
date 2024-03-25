@@ -9,10 +9,22 @@ Course::Course(Course ** editingPointer)
 	previousCourse = editingPointer;
 }
 
+Course::Course(Course& course2)
+{
+	*this = course2;
+}
+
 
 Course::~Course()
 {
 	this->refreshCourse();
+	
+	if (this->courseName != nullptr)
+	{
+		delete[] this->courseName;
+	}
+	
+	
 }
 
 
@@ -33,6 +45,7 @@ void Course::refreshCourse()
 
 		deletingPointer = &firstInstructor;
 	}
+
 }
 
 
@@ -147,20 +160,27 @@ void Course::operator=(const char* value)
 		navigatingPointer->setReference(nullptr);
 	}
 
+	if (navigatingPointer->getName() != nullptr)
+	{
+		delete navigatingPointer->getName();
+		navigatingPointer->setName(nullptr);
+	}
+
 	navigatingPointer->setName(getString(value));
 }
 
 
 void Course::operator=(Course& object2)
 {
-	this->courseName = getString(object2.courseName);
-	
 	Instructor* navigatingPointer{ object2.firstInstructor }, ** editingPointer{ &(firstInstructor) };
 
 	if (*editingPointer != nullptr)
 	{
 		this->refreshCourse();
+		editingPointer = &(this->firstInstructor);
 	}
+
+	this->courseName = getString(object2.courseName);
 
 	while (navigatingPointer != nullptr)
 	{
@@ -216,7 +236,7 @@ Course& Course::operator-(Course& course2)
 Course& Course::operator-(Instructor& removedInstructor)
 {
 	Course withRemovedInstructor;
-	withRemovedInstructor.courseName = this->courseName;
+	withRemovedInstructor.courseName = getString(courseName);
 	withRemovedInstructor.firstInstructor = &removedInstructor;
 
 	*this - withRemovedInstructor;
@@ -230,6 +250,7 @@ void Course::operator-=(const char* name)
 	Instructor * removed = new Instructor(name);
 
 	*this - *removed;
+
 
 }
 
