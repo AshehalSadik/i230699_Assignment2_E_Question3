@@ -2,25 +2,27 @@
 #include "Instructor.h"
 
 
+
 class Course
 {
 	char* courseName;
 	Instructor* firstInstructor;
 	Course* nextCourse;
 	const int maximumNumberOfInstructors{ 6 };
+	Course **previousCourse;
 
 	int totalInstructorStringLengths();
 	bool InstructorFoundInCourseIndex(Instructor&, Instructor*&);
 
 public:
-	Course();
-	Course(Instructor&);
+	Course(Course ** = nullptr);
 	~Course();
 
 	void refreshCourse();
 
 	Instructor* getFirstInstructor();
 
+	Course**& getPreviousCourse();
 	char* &getCourseName();
 	Course* &getNextCourse();
 	int getInstructorCount();

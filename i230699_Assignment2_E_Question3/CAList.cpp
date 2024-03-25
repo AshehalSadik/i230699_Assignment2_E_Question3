@@ -67,6 +67,11 @@ CAList::CAList(CAList& object2)
 }
 
 
+int CAList::getMaximumKeysAllowed()
+{
+	return maximumKeysAllowed;
+}
+
 
 int CAList::getCourseCount()
 {
@@ -102,6 +107,10 @@ Course & CAList::operator[](const char* courseName)
 		navigatingPointer->getNextCourse() = nullptr;
 	}
 
+	if (getCourseCount() > maximumKeysAllowed)
+	{
+		navigatingPointer->getPreviousCourse() = editingPointer;
+	}
 
 	return *navigatingPointer;
 }
@@ -177,29 +186,11 @@ CAList& CAList::operator-(CAList& list2)
 		{
 			*navigatingPointer - *courseFoundPointer;
 
-			if ((*navigatingPointer).getFirstInstructor() == nullptr)
-			{
-				Course* temporaryPointer = navigatingPointer->getNextCourse();
-
-				delete* editingPointer;
-
-				*editingPointer = temporaryPointer;
-
-				navigatingPointer = temporaryPointer;
-			}
-			else
-			{
-				navigatingPointer = navigatingPointer->getNextCourse();
-				editingPointer = &((*editingPointer)->getNextCourse());
-			}
-		}
-		else
-		{
-			navigatingPointer = navigatingPointer->getNextCourse();
-			editingPointer = &((*editingPointer)->getNextCourse());
 		}
 		
-
+		navigatingPointer = navigatingPointer->getNextCourse();
+		editingPointer = &((*editingPointer)->getNextCourse());
+		
 	}
 
 	return *difference;
@@ -234,6 +225,7 @@ void CAList::deleteEmptyCourses()
 		}
 	}
 }
+
 
 std::ostream& operator<<(std::ostream& console, CAList& object)
 {

@@ -14,7 +14,7 @@ public:
 	~CAList();
 	CAList(CAList&);
 
-
+	int getMaximumKeysAllowed();
 	int getCourseCount();
 	Course & operator[](const char *);
 	

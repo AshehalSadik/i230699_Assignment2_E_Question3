@@ -1,13 +1,13 @@
 #include "Course.h"
 
 
-Course::Course()
+Course::Course(Course ** editingPointer)
 {
 	courseName = nullptr;
 	firstInstructor = nullptr;
 	nextCourse = nullptr;
+	previousCourse = editingPointer;
 }
-
 
 
 Course::~Course()
@@ -40,6 +40,13 @@ Instructor* Course::getFirstInstructor()
 {
 	return firstInstructor;
 }
+
+
+Course**& Course::getPreviousCourse()
+{
+	return previousCourse;
+}
+
 
 char*& Course::getCourseName()
 {
@@ -111,6 +118,15 @@ bool Course::InstructorFoundInCourseIndex(Instructor& instructor, Instructor*& r
 
 void Course::operator=(const char* value)
 {
+	if (previousCourse != nullptr)
+	{
+		Course** editingPointer = previousCourse;
+		delete *previousCourse;
+		*editingPointer = nullptr;
+
+		return;
+	}
+
 	if (getInstructorCount() == maximumNumberOfInstructors)
 	{
 		return;
@@ -176,6 +192,8 @@ Course& Course::operator-(Course& course2)
 
 			delete* editingPointer;
 
+			*editingPointer = nullptr;
+
 			*editingPointer = temporaryPointer;
 
 			navigatingPointer = temporaryPointer;
@@ -194,6 +212,7 @@ Course& Course::operator-(Course& course2)
 	return *this;
 }
 
+
 Course& Course::operator-(Instructor& removedInstructor)
 {
 	Course withRemovedInstructor;
@@ -204,6 +223,7 @@ Course& Course::operator-(Instructor& removedInstructor)
 
 	return *this;
 }
+
 
 void Course::operator-=(const char* name)
 {
