@@ -18,13 +18,9 @@ Course::Course(Course& course2)
 Course::~Course()
 {
 	this->refreshCourse();
-	
-	if (this->courseName != nullptr)
-	{
-		delete[] this->courseName;
-	}
-	
-	
+
+    delete[] this->courseName;
+
 }
 
 
