@@ -3,10 +3,11 @@
 
 Course::Course(Course ** editingPointer)
 {
+
 	courseName = nullptr;
 	firstInstructor = nullptr;
 	nextCourse = nullptr;
-	previousCourse = editingPointer;
+	firstCourse = editingPointer;
 }
 
 Course::Course(Course& course2)
@@ -51,9 +52,9 @@ Instructor* Course::getFirstInstructor()
 }
 
 
-Course**& Course::getPreviousCourse()
+Course**& Course::getFirstCourse()
 {
-	return previousCourse;
+	return firstCourse;
 }
 
 
@@ -127,42 +128,24 @@ bool Course::InstructorFoundInCourseIndex(Instructor& instructor, Instructor*& r
 
 Course& Course::operator=(const char* value)
 {
-	if (previousCourse != nullptr)
-	{
-		Course** editingPointer = previousCourse;
-		delete *previousCourse;
-		*editingPointer = nullptr;
 
-		return *this;
-	}
+    if (getCourseCount() < totalCoursesAllowed)
+    {
+        this->addCourse();
+    }
 
-	if (getInstructorCount() == maximumNumberOfInstructors)
-	{
-		return *this;
-	}
+    Course *newCourse{nullptr};
 
-	Instructor* navigatingPointer{ firstInstructor }, ** editingPointer{&firstInstructor};
+    if (this->courseFoundInListIndex(newCourse))
+    {
+        if (newCourse->getInstructorCount() < totalInstructorsAllowed)
+        {
+            newCourse->addInstructor(value);
+        }
+    }
+    ;
 
-	while (navigatingPointer != nullptr && stringCompare(navigatingPointer->getName(), value) != true)
-	{
-		navigatingPointer = navigatingPointer->getReference();
-		editingPointer = &((*editingPointer)->getReference());
-	}
 
-	if (navigatingPointer == nullptr)
-	{
-		*editingPointer = new Instructor;
-		navigatingPointer = *editingPointer;
-		navigatingPointer->setReference(nullptr);
-	}
-
-	if (navigatingPointer->getName() != nullptr)
-	{
-		delete navigatingPointer->getName();
-		navigatingPointer->setName(nullptr);
-	}
-
-	navigatingPointer->setName(getString(value));
 
     return *this;
 }
@@ -252,7 +235,16 @@ void Course::operator-=(const char* name)
 {
 	Instructor * removed = new Instructor(name);
 
-	*this - *removed;
+    Course *course{nullptr};
+
+    if (this->courseFoundInListIndex(course))
+    {
+        *course - *removed;
+        course->firstCourse = this->firstCourse;
+        course->removeEmptyCourses();
+    }
+
+
 
 
 }
@@ -278,7 +270,7 @@ bool Course::InstructorMissing(Instructor& instructor)
 
 void Course::appendMissingInstructors(Course& similarCourse)
 {
-	if (getInstructorCount() == maximumNumberOfInstructors)
+	if (getInstructorCount() == totalInstructorsAllowed)
 	{
 		return;
 	}
@@ -292,7 +284,7 @@ void Course::appendMissingInstructors(Course& similarCourse)
 	
 	while (navigatingPointer != nullptr)
 	{
-		if (this->InstructorMissing(*navigatingPointer) && getInstructorCount() < maximumNumberOfInstructors)
+		if (this->InstructorMissing(*navigatingPointer) && getInstructorCount() < totalInstructorsAllowed)
 		{
 			*editingPointer = new Instructor;
 
@@ -326,4 +318,107 @@ std::ostream& operator<<(std::ostream& console, Course& object)
 	console << " }";
 
 	return console;
+}
+
+void Course::addCourse() {
+
+    Course* navigatingPointer = *firstCourse, **editingPointer = firstCourse;
+
+    while (navigatingPointer != nullptr && !stringCompare(navigatingPointer->getCourseName(), courseName))
+    {
+        navigatingPointer = navigatingPointer->getNextCourse();
+        editingPointer = &((*editingPointer)->getNextCourse());
+    }
+
+    if (navigatingPointer == nullptr)
+    {
+        *editingPointer = new Course{firstCourse};
+        navigatingPointer = *editingPointer;
+
+        *navigatingPointer = *this;
+
+    }
+
+}
+
+void Course::addInstructor(const char * value) {
+
+    Instructor* navigatingPointer{ firstInstructor }, ** editingPointer{&firstInstructor};
+
+    while (navigatingPointer != nullptr && !stringCompare(navigatingPointer->getName(), value))
+    {
+        navigatingPointer = navigatingPointer->getReference();
+        editingPointer = &((*editingPointer)->getReference());
+    }
+
+    if (navigatingPointer == nullptr)
+    {
+        *editingPointer = new Instructor;
+        navigatingPointer = *editingPointer;
+        navigatingPointer->setReference(nullptr);
+    }
+
+    if (navigatingPointer->getName() != nullptr)
+    {
+        delete navigatingPointer->getName();
+        navigatingPointer->setName(nullptr);
+    }
+
+    navigatingPointer->setName(getString(value));
+
+}
+
+int Course::getCourseCount() {
+
+    int numberOfCourses{0};
+    Course *navigatingPointer = *firstCourse;
+
+    while (navigatingPointer != nullptr)
+    {
+        numberOfCourses++;
+        navigatingPointer = navigatingPointer->getNextCourse();
+    }
+
+    return numberOfCourses;
+}
+
+bool Course::courseFoundInListIndex(Course *& returnPointer) {
+    Course* navigatingPointer{ *firstCourse };
+
+    while (navigatingPointer != nullptr)
+    {
+        if (stringCompare(navigatingPointer->getCourseName(), this->getCourseName()))
+        {
+            returnPointer = navigatingPointer;
+            return true;
+        }
+
+        navigatingPointer = navigatingPointer->getNextCourse();
+    }
+
+    return false;
+}
+
+void Course::removeEmptyCourses() {
+
+    Course* navigatingPointer1{ *(this->firstCourse)}, ** editingPointer{this->firstCourse};
+    while (navigatingPointer1 != nullptr)
+    {
+        if ((*navigatingPointer1).getFirstInstructor() == nullptr)
+        {
+            Course* temporaryPointer = navigatingPointer1->getNextCourse();
+
+            delete *editingPointer;
+
+            *editingPointer = temporaryPointer;
+
+            navigatingPointer1 = temporaryPointer;
+        }
+        else
+        {
+            navigatingPointer1 = navigatingPointer1->getNextCourse();
+            editingPointer = &((*editingPointer)->getNextCourse());
+        }
+    }
+
 }

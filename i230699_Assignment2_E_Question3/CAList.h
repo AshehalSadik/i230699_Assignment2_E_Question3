@@ -18,7 +18,7 @@ public:
 	void refreshList();
 	int getMaximumKeysAllowed();
 	int getCourseCount();
-	Course & operator[](const char *);
+	Course operator[](const char *);
 
 
 	CAList& operator=(CAList const &);

@@ -8,11 +8,18 @@ class Course
 	char* courseName;
 	Instructor* firstInstructor;
 	Course* nextCourse;
-	const int maximumNumberOfInstructors{ 6 };
-	Course **previousCourse;
+    const int totalCoursesAllowed{7};
+	const int totalInstructorsAllowed{6};
+	Course **firstCourse;
+
 
 	int totalInstructorStringLengths();
 	bool InstructorFoundInCourseIndex(Instructor&, Instructor*&);
+    void addCourse();
+    void addInstructor(const char *);
+    int getCourseCount();
+    bool courseFoundInListIndex(Course* &);
+    void removeEmptyCourses();
 
 public:
 	Course(Course ** = nullptr);
@@ -23,7 +30,7 @@ public:
 
 	Instructor* getFirstInstructor();
 
-	Course**& getPreviousCourse();
+	Course**& getFirstCourse();
 	char* &getCourseName();
 	Course* &getNextCourse();
 	int getInstructorCount();

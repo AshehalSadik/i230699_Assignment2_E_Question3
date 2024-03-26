@@ -94,33 +94,13 @@ int CAList::getCourseCount()
 }
 
 
-Course & CAList::operator[](const char* courseName)
+Course CAList::operator[](const char* courseName)
 {
-    this->deleteEmptyCourses();
+    Course callingCourse(&firstCourse);
+    callingCourse.getCourseName() = getString(courseName);
 
-	Course* navigatingPointer = firstCourse, **editingPointer = &firstCourse;
+    return callingCourse;
 
-	while (navigatingPointer != nullptr && !stringCompare(navigatingPointer->getCourseName(), courseName))
-	{
-		navigatingPointer = navigatingPointer->getNextCourse();
-		editingPointer = &((*editingPointer)->getNextCourse());
-	}
-
-	if (navigatingPointer == nullptr)
-	{
-		*editingPointer = new Course;
-		navigatingPointer = *editingPointer;
-
-		navigatingPointer->getCourseName() = getString(courseName);
-		navigatingPointer->getNextCourse() = nullptr;
-	}
-
-	if (getCourseCount() > maximumKeysAllowed)
-	{
-		navigatingPointer->getPreviousCourse() = editingPointer;
-	}
-
-	return *navigatingPointer;
 }
 
 
@@ -140,8 +120,9 @@ CAList & CAList::operator=(CAList const &object2)
 
         while (navigatingPointer != nullptr)
         {
-            *editingPointer = new Course;
+            *editingPointer = new Course{&firstCourse};
             **editingPointer = *navigatingPointer;
+
 
             editingPointer = &((*editingPointer)->getNextCourse());
             navigatingPointer = navigatingPointer->getNextCourse();
@@ -245,7 +226,7 @@ void CAList::deleteEmptyCourses()
 
 std::ostream& operator<<(std::ostream& console, CAList& object)
 {
-	object.deleteEmptyCourses();
+
 
 	const int consoleWindow = 80;
 	Course* navigatingPointer{ object.firstCourse };

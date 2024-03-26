@@ -5,10 +5,15 @@ int main()
 {
     CAList tt, tt2, tt3;
 
+    tt["OOP"];
+
+    cout << tt << endl;
+
     tt["OOP"] = "Dr.Ali";
     tt["OOP"] = "Mr.Shehryar";
     tt["OOP"] = "Ms.Hida";
     tt["OOP"] = "Mr.Shams";
+
     tt["DLD"] = "Mr.Amir";
     tt["DLD"] = "Mr.Shams";
     tt["DLD"] = "Dr.Mehwish";
@@ -33,6 +38,12 @@ int main()
     cout << tt2 << endl;
 
     CAList tt5 = tt + tt2;
+
+    cout << tt5 << endl;
+
+    tt5["Algo"] -= "Mr.Owais";
+
+    cout << tt5 << endl;
 
     cout << tt3 << endl;
 
@@ -84,6 +95,24 @@ int main()
     testing["a"] -= "a";
     testing["i"] = "i";
 
+
     cout << testing << endl;
+
+
+    CAList list1, list2;
+    list1["OOP"] = "Ms.Hida";
+    list2["DLD"] = "Mr.Shams";
+    list1["OOP"] -= "Ms.Hida";
+    list2["a"] = "b";
+    list2["b"] = "b";
+    list2["c"] = "b";
+    list2["d"] = "b";
+    list2["e"] = "b";
+    list2["f"] = "b";
+    list2["g"] = "b";
+
+    CAList list3 = list1 + list2;
+    cout << list3 << endl;
+    cout << list1 << endl;
 }
 
