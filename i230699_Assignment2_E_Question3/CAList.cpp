@@ -178,15 +178,30 @@ CAList CAList::operator-(CAList& list2) const
 	while (navigatingPointer != nullptr)
 	{
 		Course* courseFoundPointer{ nullptr };
-
-		if (list2.courseFoundInListIndex(*navigatingPointer, courseFoundPointer))
+        if (list2.courseFoundInListIndex(*navigatingPointer, courseFoundPointer))
 		{
 			*navigatingPointer - *courseFoundPointer;
 
+            if (navigatingPointer->getFirstCourse() == nullptr)
+            {
+                *editingPointer = navigatingPointer->getNextCourse();
+                delete navigatingPointer;
+                navigatingPointer = *editingPointer;
+            }
+            else
+            {
+                navigatingPointer = navigatingPointer->getNextCourse();
+                editingPointer = &((*editingPointer)->getNextCourse());
+            }
+
 		}
+        else
+        {
+            navigatingPointer = navigatingPointer->getNextCourse();
+            editingPointer = &((*editingPointer)->getNextCourse());
+        }
 		
-		navigatingPointer = navigatingPointer->getNextCourse();
-		editingPointer = &((*editingPointer)->getNextCourse());
+
 		
 	}
 
