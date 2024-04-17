@@ -182,7 +182,7 @@ CAList CAList::operator-(CAList& list2) const
 		{
 			*navigatingPointer - *courseFoundPointer;
 
-            if (navigatingPointer->getFirstCourse() == nullptr)
+            if (navigatingPointer->getFirstInstructor() == nullptr)
             {
                 *editingPointer = navigatingPointer->getNextCourse();
                 delete navigatingPointer;
@@ -243,7 +243,7 @@ std::ostream& operator<<(std::ostream& console, CAList& object)
 {
 
 
-	const int consoleWindow = 80;
+	const int consoleWindow = 160;
 	Course* navigatingPointer{ object.firstCourse };
 
 	while (navigatingPointer != nullptr)

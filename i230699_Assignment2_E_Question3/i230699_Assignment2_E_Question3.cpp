@@ -1,118 +1,104 @@
 #include <iostream>
 #include "CAList.h"
 
-int main()
-{
-    CAList tt, tt2, tt3;
+int main(){
 
-    tt["OOP"];
+    CAList tt, tt2, tt3,tt4,tt5,tt6;
+    cout<<tt<<endl; //should be empty.
 
-    cout << tt << endl;
+    //name entry
+    tt["OS"] = "Ms. Rabail";
+    tt["OS"] += "Mr.Shehryar";
+    tt["OS"] = "Dr. Faisal Cheema";
+    tt["OS"] = "Mr. M. Aadil Ur Rehman";
+    tt["OS"] = "Mr. M. Aadil Ur Rehman";    //repetition in same course. shouldn't add.
+    tt["OS"] += "Ms. Maryam Shahbaz";
+    tt["OS"] += "Dr. Adnan Tariq";
+    tt["OS"] += "6 limit crossed";
 
-    tt["OOP"] = "Dr.Ali";
-    tt["OOP"] = "Mr.Shehryar";
-    tt["OOP"] = "Ms.Hida";
-    tt["OOP"] = "Mr.Shams";
+    tt["DS"] += "Ms. Rabail";
+    tt["DS"] += "Mr. Majid Hussain";
+    tt["DS"] = "Ms. Noor ul Ain";
 
-    tt["DLD"] = "Mr.Amir";
-    tt["DLD"] = "Mr.Shams";
-    tt["DLD"] = "Dr.Mehwish";
+    tt2["OS"] = "Dr. Ariyan";
 
-    tt2["Algo"] = "Mr.Owais";
-    tt2["OOP"] = "Dr.Omar";
-    tt2["OOP"] = "Dr.Mehreen";
-    tt2["OOP"] = "Dr.Nouman";
-    tt2["OOP"] = "Dr.Aftab";
-    tt2["OOP"] = "Mr.Shehryar";
-    tt2["Pak Stds"] = "Mr.Ajmal";
-    tt2["Pak Stds"] += "Ms.Gul";
-    tt2["Pak Stds"] = "Ms.Memoona";
-    tt2["Islamiat"] = "Dr.Tayab";
-    tt2["Islamiat"] += "Ms.Sobia";
-    tt2["Islamiat"] = "Mr.Usman";
-    tt2["Islamiat"] += "Ms.Gul";
-    tt2["Islamiat"] += "Mr.Anas";
+    tt2["DS"] += "Ms. Rabail";
+    tt2["DS"] += "Ms. Noor ul Ain";
+    tt2["DS"] = "Dr. Syed Qaiser Ali Shah";
 
-   cout << tt << endl;
+    cout<<"\nTT:"<<endl;
+    cout<<tt<<endl;
 
-    cout << tt2 << endl;
+    cout<<"\nTT2:"<<endl;
+    cout<<tt2<<endl;
 
-    CAList tt5 = tt + tt2;
+    /* Output:
+    TT:
+    [ OS: {Ms. Rabail, Mr.Shehryar, Dr. Faisal Cheema, Mr. M. Aadil Ur Rehman, Ms. Maryam Shahbaz, Dr. Adnan Tariq}
+      DS: {Ms. Rabail ,Mr. Majid Hussain, Ms. Noor ul Ain} ]
+    TT2:
+    [
+      OS: {Dr. Ariyan}
+      DS: {Ms. Rabail,Ms. Noor ul Ain, Dr. Syed Qaiser Ali Shah} ]
+    */
 
-    cout << tt5 << endl;
+    //name discard
+    tt["OS"] -= "Mr. M. Aadil Ur Rehman";
 
-    tt5["Algo"] -= "Mr.Owais";
+    //name does not exist, discard
+    tt["OS"] -= "i do not exist";
 
-    cout << tt5 << endl;
+    //Course does not exist, discard
+    tt["i do not exist"] -= "Ms. Rabail";
 
-    cout << tt3 << endl;
+    cout<<"\nTT:"<<endl;
+    cout<<tt<<endl;
 
-    CAList tt4 = tt - tt2;
+    /* Output:
+    TT:
+    [ OS: {Ms. Rabail, Mr.Shehryar, Dr. Faisal Cheema, Ms. Maryam Shahbaz, Dr. Adnan Tariq}
+      DS: {Ms. Rabail ,Mr. Majid Hussain, Ms. Noor ul Ain} ]
 
-    tt2["a"] = "a";
-    tt2["a"] = "b";
-    tt2["a"] = "c";
-    tt2["a"] = "d";
-    tt2["a"] = "e";
-    tt2["a"] = "f";
-    tt2["a"] = "g";
-    tt2["a"] = "h";
+    */
 
-    tt2["b"] = "y";
-    tt2["c"] = "z";
-    tt2["d"] = "a";
-    tt2["d"] = "c";
-    tt2["d"] = "b";
+    tt["OS"] += "Mr. M. Aadil Ur Rehman";
 
-    cout << tt4 << endl;
-    cout << tt2 << endl;
+    cout<<"\n--Addition of two CALists--"<<endl;
+    tt3 = tt+tt2;
+    cout<<"TT3:"<<endl;
+    cout<<tt3<<endl;
 
-    tt2["Islamiat"] -= "Ms.Gul";
-    tt2["OOP"] -= "Dr.Nouman";
-    tt2["OOP"] -= "Dr.Aftab";
-    tt2["OOP"] -= "Mr.Shehryar";
-    tt2["Pak Stds"] -= "Mr.Ajmal";
-    tt2["Pak Stds"] -= "Ms.Gul";
-    tt2["Pak Stds"] -= "Ms.Memoona";
-    tt2["Islamiat"] -= "Dr.Tayab";
-    tt2["Islamiat"] -= "Ms.Sobia";
-    
+    /* Output:
+    TT3:
+    [ OS: {Ms. Rabail, Mr.Shehryar, Dr. Faisal Cheema, Ms. Maryam Shahbaz, Dr. Adnan Tariq, Mr. M. Aadil Ur Rehman}
+      DS: {Ms. Rabail ,Mr. Majid Hussain, Ms. Noor ul Ain, Dr. Syed Qaiser Ali Shah} ]
 
-    cout << tt2 << endl;
+    */
 
-    CAList testing;
-    testing["a"] = "a";
-    testing["b"] = "a";
-    testing["c"] = "a";
-    testing["d"] = "a";
-    testing["e"] = "a";
-    testing["f"] = "a";
-    testing["g"] = "a";
-    testing["h"] = "a";
+    cout<<"\n--Subtraction of two CALists--"<<endl;
+    tt4 = tt3-tt;
+    cout<<"TT4:"<<endl;
+    cout<<tt4<<endl;
 
-    cout << testing << endl;
+    /* Output:
+    TT4:
+    [ DS: {Dr. Syed Qaiser Ali Shah} ]
+    */
 
-    testing["a"] -= "a";
-    testing["i"] = "i";
+    tt5 = tt-tt;
+    cout<<"\nTT5:"<<endl;
+    cout<<tt5<<endl; //should be empty.
 
+    tt5["1"] = "1";
+    tt5["2"] = "1";
+    tt5["3"] = "1";
+    tt5["4"] = "1";
+    tt5["5"] = "1";
+    tt5["6"] = "1";
+    tt5["7"] = "1";
+    tt5["8"] += "should not add this value.";
+    cout<<"\nTT5:"<<endl;
+    cout<<tt5<<endl;
 
-    cout << testing << endl;
-
-
-    CAList list1, list2;
-    list1["OOP"] = "Ms.Hida";
-    list2["DLD"] = "Mr.Shams";
-    list1["OOP"] -= "Ms.Hida";
-    list2["a"] = "b";
-    list2["b"] = "b";
-    list2["c"] = "b";
-    list2["d"] = "b";
-    list2["e"] = "b";
-    list2["f"] = "b";
-    list2["g"] = "b";
-
-    CAList list3 = list1 + list2;
-    cout << list3 << endl;
-    cout << list1 << endl;
+    return 0;
 }
-
